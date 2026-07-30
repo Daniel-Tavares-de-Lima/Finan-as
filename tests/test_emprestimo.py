@@ -1,3 +1,9 @@
+"""Eu escrevi testes unitários para a simulação de empréstimo.
+
+Os testes cobrem casos de sucesso e validações de entrada.
+"""
+
+
 from decimal import Decimal
 
 import pytest

@@ -13,6 +13,7 @@ router = APIRouter()
 
 @router.post("/simulacoes/emprestimo", response_model=EmprestimoResponse, status_code=status.HTTP_201_CREATED)
 def criar_emprestimo(request: EmprestimoRequest, db: Session = Depends(get_db)):
+    # 1) Tento rodar a simulação; se algo inválido for enviado, retorno 422.
     try:
         resultado = simular_emprestimo(
             salario=request.salario,
@@ -23,6 +24,7 @@ def criar_emprestimo(request: EmprestimoRequest, db: Session = Depends(get_db)):
     except EmprestimoValidationError as e:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
 
+    # 2) Persisto a simulação para histórico/auditoria.
     sim = create_simulacao(
         db=db,
         tipo=TipoSimulacao.EMPRESTIMO,
@@ -39,6 +41,7 @@ def criar_emprestimo(request: EmprestimoRequest, db: Session = Depends(get_db)):
     )
     db.commit()
 
+    # 3) Montagem da resposta — converto strings/decimais para objetos Pydantic esperados.
     response = {
         "id": sim.id,
         "tipo": sim.tipo,

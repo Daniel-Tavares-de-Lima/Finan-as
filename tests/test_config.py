@@ -1,3 +1,9 @@
+"""Eu verifico as configurações padrão e os valores dos enums.
+
+Testes simples para garantir valores esperados nas settings e enums.
+"""
+
+
 from decimal import Decimal
 
 from app.config import get_settings

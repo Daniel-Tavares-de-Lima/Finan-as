@@ -13,8 +13,10 @@ router = APIRouter()
 
 @router.post("/simulacoes/cartao", response_model=CartaoResponse, status_code=status.HTTP_201_CREATED)
 def criar_cartao(request: CartaoRequest, db: Session = Depends(get_db)):
+    # Simulo o cartão usando o salário; o multiplicador vem das configs por padrão.
     resultado = simular_cartao(salario=request.salario, perfil=request.perfil)
 
+    # Persisto o resultado para histórico.
     sim = create_simulacao(
         db=db,
         tipo=TipoSimulacao.CARTAO,
@@ -29,6 +31,7 @@ def criar_cartao(request: CartaoRequest, db: Session = Depends(get_db)):
     )
     db.commit()
 
+    # Montagem da resposta para o cliente.
     response = {
         "id": sim.id,
         "tipo": sim.tipo,

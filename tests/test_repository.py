@@ -10,6 +10,7 @@ from app.enums import Perfil, TipoSimulacao
 from app.repositories.simulacao import create_simulacao, get_simulacao_by_id
 
 
+# Eu testo o repositório de simulações com SQLite em memória.
 @pytest.fixture
 def db_session():
     engine = create_engine("sqlite:///:memory:")

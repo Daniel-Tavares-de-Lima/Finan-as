@@ -3,8 +3,10 @@ from decimal import ROUND_HALF_UP, Decimal
 
 from app.enums import Perfil
 from app.services.margem import calcular_margem_emprestimo
+from app.config import get_settings
 
 
+# Eu defino uma exceção específica para validação de empréstimos — prefiro explicitar o tipo.
 class EmprestimoValidationError(ValueError):
     pass
 
@@ -19,12 +21,14 @@ class EmprestimoResult:
 
 
 def _round_money(value: Decimal) -> Decimal:
+    # Uso o mesmo padrão de arredondamento aplicado ao restante do projeto.
     return value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
 def _calcular_parcela_price(
     valor_solicitado: Decimal, taxa_mensal: Decimal, numero_parcelas: int
 ) -> Decimal:
+    # Eu implemento a fórmula Price; trato o caso de taxa zero para evitar divisão por zero.
     if taxa_mensal == 0:
         return _round_money(valor_solicitado / Decimal(numero_parcelas))
     fator = (Decimal(1) + taxa_mensal) ** numero_parcelas
@@ -37,8 +41,13 @@ def simular_emprestimo(
     perfil: Perfil,
     valor_solicitado: Decimal,
     numero_parcelas: int,
-    taxa_juros_mensal: Decimal,
+    taxa_juros_mensal: Decimal | None = None,
 ) -> EmprestimoResult:
+    # Se eu não receber a taxa, uso o valor padrão das configurações.
+    if taxa_juros_mensal is None:
+        taxa_juros_mensal = get_settings().taxa_juros_mensal
+
+    # Validações básicas conforme o spec.
     if not 1 <= numero_parcelas <= 96:
         raise EmprestimoValidationError("numero_parcelas deve estar entre 1 e 96")
     if salario <= 0 or valor_solicitado <= 0:

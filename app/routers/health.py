@@ -7,6 +7,7 @@ router = APIRouter()
 
 @router.get("/health")
 def health():
+    # Health check simples: verifico se o DB responde ao SELECT 1.
     ok = check_database_connection()
     if not ok:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail={"status": "error", "database": "disconnected"})

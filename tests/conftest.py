@@ -7,6 +7,7 @@ from app.main import app
 from app.database import Base, get_db
 
 
+# Eu preparo fixtures para testes: um engine SQLite em memória e um TestClient
 @pytest.fixture(scope="session")
 def db_engine():
     engine = create_engine("sqlite:///:memory:", connect_args={"check_same_thread": False})
@@ -27,6 +28,7 @@ def db_session(db_engine):
 
 @pytest.fixture()
 def client(db_session):
+    # Eu sobrescrevo a dependência `get_db` para usar a sessão de teste.
     def _get_test_db():
         try:
             yield db_session

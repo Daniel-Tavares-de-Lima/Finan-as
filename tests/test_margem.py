@@ -1,3 +1,9 @@
+"""Eu validei as regras de margem e percentuais por perfil.
+
+Testes focados nas funções da camada de `margem`.
+"""
+
+
 from decimal import Decimal
 
 import pytest

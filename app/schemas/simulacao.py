@@ -4,6 +4,7 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
+# Eu defino a resposta genérica para GET /simulacoes/{id} — devolvo os JSONs armazenados.
 class SimulacaoDetailResponse(BaseModel):
     id: UUID
     tipo: str

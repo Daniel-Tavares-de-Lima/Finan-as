@@ -11,10 +11,12 @@ router = APIRouter()
 
 @router.get("/simulacoes/{sim_id}", response_model=SimulacaoDetailResponse)
 def get_simulacao(sim_id: UUID, db: Session = Depends(get_db)):
+    # Recupero a simulação por id; se não existir retorno 404.
     sim = get_simulacao_by_id(db, str(sim_id))
     if not sim:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Simulação não encontrada")
 
+    # Monto o dicionário de resposta com os campos persistidos.
     return {
         "id": sim.id,
         "tipo": sim.tipo,

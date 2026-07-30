@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field
 from app.enums import Perfil, TipoSimulacao
 
 
+# Eu defino os modelos Pydantic para requisição/resposta de empréstimo.
+# Uso `Decimal` para valores monetários e valido os limites do spec.
 class EmprestimoRequest(BaseModel):
     salario: Decimal = Field(gt=0, examples=[5000.00])
     perfil: Perfil
@@ -14,6 +16,7 @@ class EmprestimoRequest(BaseModel):
     numero_parcelas: int = Field(ge=1, le=96, examples=[24])
 
 
+# Resposta da simulação; `from_attributes` permite popular direto de objetos ORM.
 class EmprestimoResponse(BaseModel):
     id: UUID
     tipo: TipoSimulacao

@@ -1,6 +1,8 @@
 """create simulacoes table
 
 Revision ID: 001
+
+Eu criei a migration que define a tabela `simulacoes` usada pelo projeto.
 """
 from typing import Sequence, Union
 

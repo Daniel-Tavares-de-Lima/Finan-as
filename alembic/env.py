@@ -13,6 +13,8 @@ from app.config import get_settings  # noqa: E402
 from app.database import Base  # noqa: E402
 from app.models import simulacao  # noqa: F401,E402
 
+
+# Eu configuro o Alembic para usar a URL definida nas configurações da aplicação
 config = context.config
 fileConfig(config.config_file_name)
 

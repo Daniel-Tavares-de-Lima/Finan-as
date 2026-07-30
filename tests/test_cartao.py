@@ -1,3 +1,9 @@
+"""Eu escrevi testes para validar a simulação do cartão consignado.
+
+Cobrem casos básicos, INSS e salário inválido.
+"""
+
+
 from decimal import Decimal
 
 import pytest
